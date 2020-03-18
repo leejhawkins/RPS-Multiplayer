@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-database.js"></script>
+    <script src="https://code.jquery.com/jquery.js"></script>
+
+</head>
+
+
+<body>
+    <header>
+        <h1>Rock,Paper,Scissors</h1>
+    </header>
+    <div class="container">
+        <div id="narrate-div">
+        
+
+                <div class="input-group" id="login-form">
+                    <input type="text" class="validate" placeholder="Player's Name" id="player-name-input">
+                
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button" id="player-login">Start</button>
+                    </div>
+                </div>
+                <h5 id="turn-div"></h5>
+            
+        
+        </div>
+        <div class="row" id="row2">
+          <div class="col">
+            <div class="card" id="player1-card">
+                
+                <div class="card-body text-center">
+                    <h5 id="player1">Waiting for Player 1</h5>
+                    <p id="player1-rock" class="btn-player1"></p>
+                    <p id="player1-paper" class="btn-player1"></p>
+                    <p id="player1-scissors" class="btn-player1"></p>
+                    <p id="player1-wins-losses"></p>
+                </div>
+                
+            </div>
+            
+          </div>
+          <div class="col">
+            <div class="card" >
+                
+                <div class="card-body text-center">
+                    <h2 id="outcome-text"></h2>
+                </div>
+                
+            </div>
+            
+          </div>
+          <div class="col">
+            <div class="card" id="player2-card">
+                
+                <div class="card-body text-center">
+                    <h5 id="player2">Waiting for Player 2</h5>
+                    <p id="player2-rock" class="btn-player2"></p>
+                    <p id="player2-paper" class="btn-player2"></p>
+                    <p id="player2-scissors" class="btn-player2"></p>
+                    <p id="player2-wins-losses"></p>
+                </div>
+               
+                
+            </div>
+            
+          
+           </div>
+      </div>
+      <div class="row" id="row3">
+        <div class="card">
+            <div class="card-body" id="chat-body">
+
+            </div>
+
+        </div>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="chat-input">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" id="chat-button">Send</button>
+            </div>
+        </div>
+        
+      </div>
+
+</body>
+<script src="assets/javascript/rps.js" type="text/javascript"></script>
+</html>

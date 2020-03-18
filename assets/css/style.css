@@ -1,0 +1,48 @@
+header {
+    margin-top:10px;
+  
+}
+body {
+    background: lightgreen;
+    box-sizing: border-box;
+    
+}
+.container {
+    position: relative;
+    top: 20px;
+    margin: auto;
+    max-width: 600px;
+    width: 100%;
+   
+
+}
+#narrate-div {
+    text-align:center;
+}
+.input-group {
+    margin: auto;
+    width: 60%;
+}
+
+.row {
+    
+    margin-top:25px;
+}
+
+.card-body {
+    height: 150px;
+    padding: 5px;
+
+}
+h1 {
+    text-align: center;
+}
+.mb-3 {
+    width: 600px;
+}
+
+#chat-body {
+    width: 600px;
+    
+   
+}
