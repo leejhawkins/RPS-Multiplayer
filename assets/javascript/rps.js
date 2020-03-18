@@ -13,7 +13,7 @@ var database = firebase.database();
 var player1 = "";
 var player2 = "";
 var chat = "";
-var turn = 1;
+var turn = 0;
 var yourName = "";
 var messageNumber = 0;
 
@@ -69,6 +69,7 @@ database.ref('/players/player2').on("value", function (snapshot) {
     $("#player2-scissors").addClass("btn btn-danger btn-player2")
     $("#player2-scissors").attr("data-text", "scissors")
 
+
   } else {
     player2 = ""
     $("#player2").text("Waiting for Player 2")
@@ -81,6 +82,9 @@ database.ref('/players/player2').on("value", function (snapshot) {
     $("#player2-scissors").removeClass("btn btn-danger")
     $("#player2-wins-losses").empty();
   }
+
+
+
 
 })
 
@@ -104,6 +108,7 @@ $("#player-login").on("click", function (event) {
     $("#narrate-div").prepend(welcomeDiv)
     database.ref('/players/player1').onDisconnect().remove();
 
+
   } else if (player2 === "") {
     player2 = yourName;
     database.ref('players/player2').set({
@@ -116,19 +121,24 @@ $("#player-login").on("click", function (event) {
     var welcomeDiv = $('<h4>');
     welcomeDiv.text("Welcome to the game:  " + player2)
     $("#narrate-div").prepend(welcomeDiv)
-    database.ref('/turn').set({
-      turn: turn
-    })
+
+
     database.ref('players/player2').onDisconnect().remove()
+
+
 
 
   }
   if (player1 && player2) {
-    
-  
-    changeTurn()
-    
+
+    turn = 1;
+    database.ref('/turn').set({
+      turn: turn
+    })
+
   }
+  
+
   $("#player-name-input").val("")
 
 })
@@ -156,12 +166,15 @@ $(".btn-player1").on("click", function (event) {
       choice: player1Choice
     })
     turn++
-    changeTurn();
+    database.ref('/turn').update({
+      turn: turn
+    })
+
   }
 
 })
-$(".btn-player2").on("click",function (event) {
-  if (turn ===2) {
+$(".btn-player2").on("click", function (event) {
+  if (turn === 2) {
     player2Choice = $(this).attr("data-text");
     database.ref('players/player2').update({
       choice: player2Choice
@@ -172,11 +185,18 @@ $(".btn-player2").on("click",function (event) {
 })
 
 database.ref('/players/').on("child_removed", function (snapshot) {
-  name = snapshot.val().name
-  message = name + " has disconnected";
-  database.ref('/chat/').set({
-    message: message,
-  })
+  if (player1 == "" && player2 == "") {
+    database.ref('/chat').remove();
+  } else {
+    name = snapshot.val().name
+    message = name + " has disconnected";
+
+    console.log(player1)
+    console.log(player2)
+    database.ref('/chat/').set({
+      message: message,
+    })
+  }
 })
 
 database.ref('/chat/').on("value", function (snapshot) {
@@ -190,46 +210,69 @@ database.ref('/chat/').on("value", function (snapshot) {
 
 function outcome() {
   if (player1Choice === "rock" && player2Choice === "scissors" || player1Choice === "scissors" && player2Choice === "paper" || player1Choice === "paper" && player2Choice === "rock") {
-    $("#outcome-text").html(player1 +"         wins!!")
+    $("#outcome-text").html(player1 + "         wins!!")
     player1Wins++
     database.ref('players/player1').update({
-      wins:player1Wins
+      wins: player1Wins
     })
     player2Losses++
     database.ref('players/player2').update({
-      losses:player2Losses
+      losses: player2Losses
     })
   } else {
     $("#outcome-text").html(player2 + "        wins!!!")
     player1Losses++
     database.ref('players/player1').update({
-      losses:player1Losses
+      losses: player1Losses
     })
     player2Wins++
     database.ref('players/player2').update({
-      wins:player2Wins
+      wins: player2Wins
     })
 
   }
-  setTimeout(changeTurn,2500)
-  
+  setTimeout(reset, 2500)
+
+
 
 }
-function changeTurn() {
-  var turnDiv = $('<div>');
-  if (turn===1) {
+database.ref('/turn').on("value", function (snapshot) {
+
+
+  database.ref('/turn').onDisconnect().remove()
+  if (snapshot.child("turn").exists()) {
+    turn = snapshot.val().turn
+  } else {
+    turn = 0
+    database.ref('/turn').set({
+      turn: turn
+    })
+  }
+
+  if (turn === 1) {
     $("#player1-card").css("border", " solid yellow 3px")
     $("#player2-card").css("border", "none")
     $("#outcome-text").empty()
-    turnDiv.text("It is " + player1 + "'s turn")
-  } else if (turn===2) {
+    $("#turn-div").text("It is " + player1 + "'s turn")
+  } else if (turn === 2) {
     $("#player2-card").css("border", " solid yellow 3px")
     $("#player1-card").css("border", "none")
-    turnDiv.text("It is " + player2 + "'s turn")
+    $("#turn-div").text("It is " + player2 + "'s turn")
 
+  } else {
+    $("#player1-card").css("border", "none")
+    $("#player2-card").css("border", "none")
+    $("#turn-div").empty()
   }
-  $("#turn-div").empty()
-  $("#turn-div").append(turnDiv)
+
+})
+
+function reset() {
+  turn = 1;
+  database.ref('/turn').set({
+    turn: turn
+  })
+  $("#outcome-text").empty();
 }
 
 
