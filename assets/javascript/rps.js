@@ -137,7 +137,7 @@ $("#player-login").on("click", function (event) {
     })
 
   }
-  
+
 
   $("#player-name-input").val("")
 
@@ -219,6 +219,8 @@ function outcome() {
     database.ref('players/player2').update({
       losses: player2Losses
     })
+  } else if (player1Choice === player2Choice) {
+    $("#outcome-text").html("It's a tie!!!")
   } else {
     $("#outcome-text").html(player2 + "        wins!!!")
     player1Losses++
